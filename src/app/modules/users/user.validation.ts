@@ -15,3 +15,7 @@ export const userValidationSchema = z.object({
     }),
   }),
 });
+
+export const userValidation = {
+  userValidationSchema,
+};
