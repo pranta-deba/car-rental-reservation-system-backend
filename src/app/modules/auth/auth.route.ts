@@ -8,8 +8,14 @@ const router = express.Router();
 // create user route
 router.post(
   '/signup',
-  validateRequest(userValidation.userValidationSchema),
+  validateRequest(userValidation.userSignUpValidationSchema),
   UserControllers.createUser,
+);
+// login user route
+router.post(
+  '/signin',
+  validateRequest(userValidation.userSignInValidationScheme),
+  UserControllers.loginUser,
 );
 
 export const UserRoute = router;

@@ -1,14 +1,14 @@
 import { model, Schema } from 'mongoose';
-import { TSignUp } from './auth.interface';
+import { TSignUp, UserModel } from './auth.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
-const UserSchema = new Schema<TSignUp>(
+const UserSchema = new Schema<TSignUp, UserModel>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: 0 },
     phone: { type: String, required: true },
     address: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
@@ -32,4 +32,17 @@ UserSchema.post('save', function (doc, next) {
   next();
 });
 
-export const User = model<TSignUp>('User', UserSchema);
+// find one by email
+UserSchema.statics.isUserExistsByEmail = async function (email: string) {
+  return await User.findOne({ email }).select('+password'); // ('+password') --> password and all data
+};
+
+// compare plain text password with hashed password
+UserSchema.statics.isPasswordMatched = async function (
+  plainTextPassword: string,
+  hashedPassword: string,
+) {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+};
+
+export const User = model<TSignUp, UserModel>('User', UserSchema);

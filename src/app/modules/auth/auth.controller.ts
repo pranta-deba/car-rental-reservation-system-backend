@@ -5,8 +5,7 @@ import { UserServices } from './auth.service';
 
 // create user controller
 const createUser = catchAsync(async (req, res) => {
-  const { password, user: userData } = req.body;
-  const result = await UserServices.createUserIntoDB(password, userData);
+  const result = await UserServices.createUserIntoDB(req.body);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
@@ -15,6 +14,18 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+// login user controller
+const loginUser = catchAsync(async (req, res) => {
+  const result = await UserServices.loginUserIntoDB(req.body);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'User logged in successfully.',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   createUser,
+  loginUser,
 };
