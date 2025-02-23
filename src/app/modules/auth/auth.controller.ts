@@ -1,7 +1,7 @@
 import status from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
-import { UserServices } from './user.service';
+import { UserServices } from './auth.service';
 
 // create user controller
 const createUser = catchAsync(async (req, res) => {
@@ -11,7 +11,7 @@ const createUser = catchAsync(async (req, res) => {
     statusCode: status.OK,
     success: true,
     message: 'Student is created successfully.',
-    data: null,
+    data: result,
   });
 });
 

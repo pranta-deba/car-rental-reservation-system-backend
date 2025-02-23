@@ -6,7 +6,7 @@ export const userValidationSchema = z.object({
     user: z.object({
       name: z.string().min(2, 'Name must be at least 2 characters'),
       email: z.string().email('Invalid email address'),
-      role: z.enum(['user', 'admin']),
+      role: z.enum(['user', 'admin']).optional(),
       phone: z
         .string()
         .regex(/^\d{10,15}$/, 'Phone number must be 10-15 digits'),

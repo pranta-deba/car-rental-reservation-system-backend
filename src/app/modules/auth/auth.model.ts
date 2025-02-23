@@ -1,7 +1,7 @@
-import mongoose, { Model, Schema } from 'mongoose';
-import { TUser } from './user.interface';
+import { model, Schema } from 'mongoose';
+import { TSignUp } from './auth.interface';
 
-const UserSchema: Schema<TUser> = new Schema<TUser>(
+const UserSchema = new Schema<TSignUp>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -14,7 +14,4 @@ const UserSchema: Schema<TUser> = new Schema<TUser>(
   { timestamps: true },
 );
 
-export const UserModel: Model<TUser> = mongoose.model<TUser>(
-  'User',
-  UserSchema,
-);
+export const UserModel = model<TSignUp>('User', UserSchema);

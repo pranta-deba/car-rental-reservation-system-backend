@@ -1,4 +1,4 @@
-export interface TUser {
+export interface TSignUp {
   name: string;
   email: string;
   role: 'user' | 'admin';
