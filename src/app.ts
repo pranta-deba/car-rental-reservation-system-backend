@@ -35,7 +35,7 @@ app.get('/', async (req: Request, res: Response) => {
 
 // api not found
 app.use((req: Request, res: Response) => {
-  res.status(status.NOT_FOUND).json({
+  res.status(status.NOT_FOUND).send({
     success: false,
     message: 'API Not Found!',
     error: '',
