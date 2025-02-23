@@ -16,6 +16,7 @@ const UserSchema = new Schema<TSignUp>(
   { timestamps: true },
 );
 
+// hash password set in save user data
 UserSchema.pre('save', async function (next) {
   const user = this;
   user.password = await bcrypt.hash(
@@ -25,4 +26,10 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
-export const UserModel = model<TSignUp>('User', UserSchema);
+// remove password from user object before returning it to client
+UserSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
+});
+
+export const User = model<TSignUp>('User', UserSchema);
