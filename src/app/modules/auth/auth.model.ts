@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { TSignUp } from './auth.interface';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 const UserSchema = new Schema<TSignUp>(
   {
@@ -13,5 +15,14 @@ const UserSchema = new Schema<TSignUp>(
   },
   { timestamps: true },
 );
+
+UserSchema.pre('save', async function (next) {
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
 
 export const UserModel = model<TSignUp>('User', UserSchema);
