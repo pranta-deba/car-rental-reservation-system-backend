@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 
-export interface TSignUp {
+export type TSignUp = {
   name: string;
   email: string;
   role: 'user' | 'admin';
@@ -8,12 +8,12 @@ export interface TSignUp {
   phone: string;
   address: string;
   isDeleted: boolean;
-}
+};
 
-export interface TSignIn {
+export type TSignIn = {
   email: string;
   password: string;
-}
+};
 
 export interface UserModel extends Model<TSignUp> {
   isUserExistsByEmail(email: string): Promise<TSignUp>;
