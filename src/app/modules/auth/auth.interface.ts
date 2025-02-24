@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import { USER_ROLE } from './auth.constant';
 
 export type TSignUp = {
   name: string;
@@ -22,3 +23,5 @@ export interface UserModel extends Model<TSignUp> {
     hashedPassword: string,
   ): Promise<Boolean>;
 }
+
+export type TUserRole = keyof typeof USER_ROLE;

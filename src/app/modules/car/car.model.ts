@@ -6,6 +6,7 @@ const CarSchema = new Schema<TCar>(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
     description: {
       type: String,

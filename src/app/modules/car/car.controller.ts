@@ -14,6 +14,18 @@ const createCar = catchAsync(async (req, res) => {
   });
 });
 
+// create car controller
+const getAllCar = catchAsync(async (req, res) => {
+  const result = await CarServices.getAllCarIntoDB();
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Cars retrieved successfully',
+    data: result,
+  });
+});
+
 export const CarControllers = {
   createCar,
+  getAllCar,
 };
