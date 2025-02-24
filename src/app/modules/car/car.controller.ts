@@ -14,13 +14,26 @@ const createCar = catchAsync(async (req, res) => {
   });
 });
 
-// create car controller
+// get all car controller
 const getAllCar = catchAsync(async (req, res) => {
   const result = await CarServices.getAllCarIntoDB();
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Cars retrieved successfully',
+    message: 'Cars retrieved successfully.',
+    data: result,
+  });
+});
+
+// update car controller
+const updateCar = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const car = req.body;
+  const result = await CarServices.updateCarIntoDB(id, car);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Car updated successfully.',
     data: result,
   });
 });
@@ -28,4 +41,5 @@ const getAllCar = catchAsync(async (req, res) => {
 export const CarControllers = {
   createCar,
   getAllCar,
+  updateCar,
 };

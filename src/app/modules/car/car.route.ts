@@ -11,11 +11,19 @@ const router = express.Router();
 router.post(
   '/',
   auth(USER_ROLE.admin),
-  validateRequest(carValidation.carValidationSchema),
+  validateRequest(carValidation.createCarValidationSchema),
   CarControllers.createCar,
 );
 
 // all user route
 router.get('/', CarControllers.getAllCar);
+
+// create user route
+router.put(
+  '/:id',
+  auth(USER_ROLE.admin),
+  validateRequest(carValidation.updateCarValidationSchema),
+  CarControllers.updateCar,
+);
 
 export const CarRoute = router;
