@@ -25,5 +25,7 @@ router.put(
   validateRequest(carValidation.updateCarValidationSchema),
   CarControllers.updateCar,
 );
+// delete user route
+router.delete('/:id', auth(USER_ROLE.admin), CarControllers.deleteCar);
 
 export const CarRoute = router;

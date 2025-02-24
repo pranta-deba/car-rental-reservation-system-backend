@@ -26,9 +26,21 @@ const updateCarIntoDB = async (id: string, payload: Partial<TCar>) => {
 
   return updatedCar;
 };
+// delete car service
+const deleteCarIntoDB = async (id: string) => {
+  const result = await Car.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    {
+      new: true,
+    },
+  );
+  return result;
+};
 
 export const CarServices = {
   createCarIntoDB,
   getAllCarIntoDB,
   updateCarIntoDB,
+  deleteCarIntoDB,
 };
