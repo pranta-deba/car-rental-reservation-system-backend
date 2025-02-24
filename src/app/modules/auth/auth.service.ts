@@ -2,6 +2,8 @@ import status from 'http-status';
 import AppError from '../../errors/AppError';
 import { TSignIn, TSignUp } from './auth.interface';
 import { User } from './auth.model';
+import config from '../../config';
+import { createToken } from './auth.utils';
 
 // create user service
 const createUserIntoDB = async (payload: TSignUp) => {
@@ -34,7 +36,18 @@ const loginUserIntoDB = async (payload: TSignIn) => {
   }
   // password not sending
   user.password = '';
-  return user;
+
+  //create token and sent to the  client
+  const jwtPayload = {
+    email: user.email,
+  };
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+
+  return { token: accessToken, user };
 };
 
 export const UserServices = {
