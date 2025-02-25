@@ -13,6 +13,12 @@ const getAllCarIntoDB = async () => {
   const result = await Car.find();
   return result;
 };
+
+// get a car service
+const getACarIntoDB = async (id: string) => {
+  const result = await Car.findById(id);
+  return result;
+};
 // update car service
 const updateCarIntoDB = async (id: string, payload: Partial<TCar>) => {
   const updatedCar = await Car.findByIdAndUpdate(id, payload, {
@@ -43,4 +49,5 @@ export const CarServices = {
   getAllCarIntoDB,
   updateCarIntoDB,
   deleteCarIntoDB,
+  getACarIntoDB,
 };

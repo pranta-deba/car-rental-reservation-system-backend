@@ -7,7 +7,7 @@ import { USER_ROLE } from '../auth/auth.constant';
 
 const router = express.Router();
 
-// create user route
+// create car route
 router.post(
   '/',
   auth(USER_ROLE.admin),
@@ -15,17 +15,20 @@ router.post(
   CarControllers.createCar,
 );
 
-// all user route
+// all car route
 router.get('/', CarControllers.getAllCar);
 
-// create user route
+// a user route
+router.get('/:id', CarControllers.getACar);
+
+// create car route
 router.put(
   '/:id',
   auth(USER_ROLE.admin),
   validateRequest(carValidation.updateCarValidationSchema),
   CarControllers.updateCar,
 );
-// delete user route
+// delete car route
 router.delete('/:id', auth(USER_ROLE.admin), CarControllers.deleteCar);
 
 export const CarRoute = router;
