@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { TBooking } from './booking.interface';
 
 const BookingSchema = new Schema<TBooking>(
@@ -12,3 +12,5 @@ const BookingSchema = new Schema<TBooking>(
   },
   { timestamps: true },
 );
+
+export const Booking = model<TBooking>('Booking', BookingSchema);
