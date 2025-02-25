@@ -8,7 +8,6 @@ const bookingValidationSchema = z.object({
     .number()
     .min(0, 'Total cost must be a positive number')
     .default(0),
-  user: z.string().uuid('Invalid user ID format'),
   car: z.string().uuid('Invalid car ID format'),
 });
 
