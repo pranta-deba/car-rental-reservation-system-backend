@@ -9,7 +9,7 @@ const router = express.Router();
 // create booking route
 router.post(
   '/',
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.user),
   validateRequest(bookingValidation.bookingValidationSchema),
   BookingController.createBooking,
 );

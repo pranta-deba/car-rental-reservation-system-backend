@@ -5,11 +5,12 @@ import { BookingService } from './booking.service';
 
 // create booking controller
 const createBooking = catchAsync(async (req, res) => {
-  const result = await BookingService.createBookingIntoDB(req.body);
+  const { body: bookingData, user } = req;
+  const result = await BookingService.createBookingIntoDB(bookingData, user);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Car created successfully.',
+    message: 'Car booked successfully.',
     data: result,
   });
 });
