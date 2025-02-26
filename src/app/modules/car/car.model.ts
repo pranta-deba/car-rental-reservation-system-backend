@@ -28,6 +28,11 @@ const CarSchema = new Schema<TCar>(
       type: Number,
       required: true,
     },
+    image: {
+      type: String,
+      required: true,
+      default: 'no-image.jpg',
+    },
     status: {
       type: String,
       enum: ['available', 'unavailable'],

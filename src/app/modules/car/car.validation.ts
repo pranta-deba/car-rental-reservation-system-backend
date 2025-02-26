@@ -6,6 +6,7 @@ const createCarValidationSchema = z.object({
     description: z.string().min(1, 'Description is required'),
     color: z.string().min(1, 'Color is required'),
     isElectric: z.boolean(),
+    image: z.string(),
     features: z.array(z.string()).nonempty('At least one feature is required'),
     pricePerHour: z.number().min(0, 'Price per hour must be a positive number'),
     isDeleted: z.boolean().optional(),
@@ -18,6 +19,7 @@ const updateCarValidationSchema = z.object({
     description: z.string().min(1, 'Description is required').optional(),
     color: z.string().min(1, 'Color is required').optional(),
     isElectric: z.boolean().optional(),
+    image: z.string().optional(),
     features: z
       .array(z.string())
       .nonempty('At least one feature is required')

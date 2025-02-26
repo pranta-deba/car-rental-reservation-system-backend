@@ -7,4 +7,5 @@ export type TCar = {
   pricePerHour: number;
   isDeleted: boolean;
   status: 'available' | 'unavailable';
+  image: string;
 };
