@@ -81,4 +81,13 @@ const userAllBookingIntoDB = async (user: JwtPayload) => {
   return bookings;
 };
 
-export const BookingService = { createBookingIntoDB, userAllBookingIntoDB };
+// Return The Car service
+const returnTheCarIntoDB = async (bookingId: string) => {
+  return null;
+};
+
+export const BookingService = {
+  createBookingIntoDB,
+  userAllBookingIntoDB,
+  returnTheCarIntoDB,
+};
