@@ -7,7 +7,7 @@ import { Booking } from './booking.model';
 import { User } from '../auth/auth.model';
 import mongoose from 'mongoose';
 
-// create car service
+// create booking service
 const createBookingIntoDB = async (payload: TBooking, user: JwtPayload) => {
   const { car: carId } = payload;
   const { email } = user;
@@ -69,4 +69,16 @@ const createBookingIntoDB = async (payload: TBooking, user: JwtPayload) => {
   }
 };
 
-export const BookingService = { createBookingIntoDB };
+// user booking service
+const userAllBookingIntoDB = async (user: JwtPayload) => {
+  const userData = await User.findOne({ email: user.email });
+  if (!userData) {
+    throw new AppError(status.NOT_FOUND, 'User not found!');
+  }
+  const bookings = await Booking.find({ user: userData._id })
+    .populate('car')
+    .populate('user');
+  return bookings;
+};
+
+export const BookingService = { createBookingIntoDB, userAllBookingIntoDB };
