@@ -13,7 +13,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
     // checking if the token is missing
     if (!token) {
-      throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
+      throw new AppError(
+        status.UNAUTHORIZED,
+        'You have no access to this route!',
+      );
     }
     // checking if the given token is valid
     const decoded = jwt.verify(
@@ -36,7 +39,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
     // role verify
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
+      throw new AppError(
+        status.UNAUTHORIZED,
+        'You have no access to this route!',
+      );
     }
 
     // decoded
