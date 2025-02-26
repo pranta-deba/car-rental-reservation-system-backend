@@ -21,10 +21,16 @@ const getACarIntoDB = async (id: string) => {
 };
 // update car service
 const updateCarIntoDB = async (id: string, payload: Partial<TCar>) => {
-  const updatedCar = await Car.findByIdAndUpdate(id, payload, {
-    new: true,
-    runValidators: true,
-  });
+  const updatedCar = await Car.findByIdAndUpdate(
+    id,
+    {
+      $set: payload,
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
 
   if (!updatedCar) {
     throw new AppError(status.NOT_FOUND, 'Car not found');
