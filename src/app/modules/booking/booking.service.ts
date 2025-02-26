@@ -83,16 +83,67 @@ const userAllBookingIntoDB = async (user: JwtPayload) => {
 
 // Return The Car service
 const returnTheCarIntoDB = async (bookingId: string, endTime: string) => {
-  const booking = await Booking.findById(bookingId).populate('car');
-  if (!booking) {
-    throw new AppError(status.NOT_FOUND, 'Booking not found!');
-  }
+  const session = await mongoose.startSession();
 
-  if (booking.endTime) {
-    throw new AppError(status.FORBIDDEN, 'Car has already been returned!');
-  }
+  try {
+    session.startTransaction();
 
-  return null;
+    // step 1
+    const booking = await Booking.findById(bookingId)
+      .populate('car')
+      .session(session);
+    if (!booking) {
+      throw new AppError(status.NOT_FOUND, 'Booking not found!');
+    }
+
+    if (booking.endTime) {
+      throw new AppError(status.FORBIDDEN, 'Car has already been returned!');
+    }
+    // step 2
+    const car = await Car.findById(booking.car._id).session(session);
+    if (!car) {
+      throw new AppError(status.NOT_FOUND, 'Car not found!');
+    }
+    // step 3
+    const startTime = new Date(`1970-01-01T${booking.startTime}:00Z`);
+    const endTimeParsed = new Date(`1970-01-01T${endTime}:00Z`);
+
+    if (!(startTime instanceof Date) || !(endTimeParsed instanceof Date)) {
+      throw new AppError(status.BAD_REQUEST, 'Invalid time format');
+    }
+    // step 4
+    const durationInMilliseconds =
+      endTimeParsed.getTime() - startTime.getTime();
+    const durationInHours = durationInMilliseconds / (1000 * 60 * 60);
+
+    if (durationInHours <= 0) {
+      throw new AppError(
+        status.BAD_REQUEST,
+        'End time must be later than start time!',
+      );
+    }
+    // step 5
+    const totalCost = durationInHours * car.pricePerHour;
+    // step 6
+    booking.endTime = endTime;
+    booking.totalCost = totalCost;
+    car.status = 'available';
+    // step 7
+    await booking.save({ session });
+    await car.save({ session });
+    // step 8 : end session
+    await session.commitTransaction();
+    await session.endSession();
+    // step 9
+    const updatedBooking = await Booking.findById(bookingId)
+      .populate('car')
+      .populate('user');
+    return updatedBooking;
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new AppError(status.BAD_REQUEST, 'Failed to returned car!');
+  }
 };
 
 export const BookingService = {
