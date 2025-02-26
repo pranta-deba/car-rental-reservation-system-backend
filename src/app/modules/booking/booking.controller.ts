@@ -29,7 +29,8 @@ const userAllBooking = catchAsync(async (req, res) => {
 
 // return the car controller
 const returnTheCar = catchAsync(async (req, res) => {
-  const result = await BookingService.returnTheCarIntoDB(req.body);
+  const { bookingId, endTime } = req.body;
+  const result = await BookingService.returnTheCarIntoDB(bookingId, endTime);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,

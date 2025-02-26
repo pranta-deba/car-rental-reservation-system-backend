@@ -82,8 +82,16 @@ const userAllBookingIntoDB = async (user: JwtPayload) => {
 };
 
 // Return The Car service
-const returnTheCarIntoDB = async (payload: Partial<TBooking>) => {
-  console.log(payload);
+const returnTheCarIntoDB = async (bookingId: string, endTime: string) => {
+  const booking = await Booking.findById(bookingId).populate('car');
+  if (!booking) {
+    throw new AppError(status.NOT_FOUND, 'Booking not found!');
+  }
+
+  if (booking.endTime) {
+    throw new AppError(status.FORBIDDEN, 'Car has already been returned!');
+  }
+
   return null;
 };
 

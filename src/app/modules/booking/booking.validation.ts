@@ -15,7 +15,7 @@ const bookingValidationSchema = z.object({
 });
 const returnBookingValidationSchema = z.object({
   body: z.object({
-    bookingId: z.string(),
+    bookingId: z.string().min(1, 'Booking id is required'),
     endTime: z.string().min(1, 'End time is required'),
   }),
 });
