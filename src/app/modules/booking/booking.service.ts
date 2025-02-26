@@ -82,7 +82,8 @@ const userAllBookingIntoDB = async (user: JwtPayload) => {
 };
 
 // Return The Car service
-const returnTheCarIntoDB = async (bookingId: string) => {
+const returnTheCarIntoDB = async (payload: Partial<TBooking>) => {
+  console.log(payload);
   return null;
 };
 

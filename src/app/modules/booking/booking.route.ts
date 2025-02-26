@@ -17,6 +17,11 @@ router.post(
 router.get('/', auth(USER_ROLE.user), BookingController.userAllBooking);
 
 // return the car route
-router.put('/', auth(USER_ROLE.admin), BookingController.returnTheCar);
+router.put(
+  '/',
+  auth(USER_ROLE.admin),
+  validateRequest(bookingValidation.returnBookingValidationSchema),
+  BookingController.returnTheCar,
+);
 
 export const BookingRoute = router;
