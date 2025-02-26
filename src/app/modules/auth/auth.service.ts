@@ -1,12 +1,12 @@
 import status from 'http-status';
 import AppError from '../../errors/AppError';
-import { TSignIn, TSignUp } from './auth.interface';
+import { TSignIn, TUser } from './auth.interface';
 import { User } from './auth.model';
 import config from '../../config';
-import { createToken } from './auth.utils';
+import { generateToken } from './auth.utils';
 
 // create user service
-const createUserIntoDB = async (payload: TSignUp) => {
+const createUserIntoDB = async (payload: TUser) => {
   const result = await User.create(payload);
   return result;
 };
@@ -42,7 +42,7 @@ const loginUserIntoDB = async (payload: TSignIn) => {
     email: user.email,
     role: user.role,
   };
-  const accessToken = createToken(
+  const accessToken = generateToken(
     jwtPayload,
     config.jwt_access_secret as string,
     config.jwt_access_expires_in as string,

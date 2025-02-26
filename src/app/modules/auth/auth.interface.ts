@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { USER_ROLE } from './auth.constant';
 
-export type TSignUp = {
+export type TUser = {
   name: string;
   email: string;
   role: 'user' | 'admin';
@@ -16,8 +16,14 @@ export type TSignIn = {
   password: string;
 };
 
-export interface UserModel extends Model<TSignUp> {
-  isUserExistsByEmail(email: string): Promise<TSignUp>;
+// generate token types
+export type TGenerateToken = {
+  email: string;
+  role: string;
+};
+
+export interface UserModel extends Model<TUser> {
+  isUserExistsByEmail(email: string): Promise<TUser>;
   isPasswordMatched(
     plainTextPassword: string,
     hashedPassword: string,

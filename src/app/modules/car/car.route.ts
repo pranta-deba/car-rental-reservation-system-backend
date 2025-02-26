@@ -21,7 +21,7 @@ router.get('/', CarControllers.getAllCar);
 // a user route
 router.get('/:id', CarControllers.getACar);
 
-// create car route
+// update car route
 router.put(
   '/:id',
   auth(USER_ROLE.admin),

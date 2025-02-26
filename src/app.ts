@@ -15,7 +15,10 @@ app.use(cors({ origin: ['http://localhost:5173'] }));
 // application route
 app.use('/api', router);
 
-// root api
+// global error handle zod, mongoose, custom error, error, cast error etc..
+app.use(globalErrorHandler);
+
+// root route
 app.get('/', async (req: Request, res: Response) => {
   res.send(`
     <!DOCTYPE html>
@@ -34,16 +37,12 @@ app.get('/', async (req: Request, res: Response) => {
   `);
 });
 
-// api not found
+// not found route
 app.use((req: Request, res: Response) => {
-  res.status(status.NOT_FOUND).send({
+  res.status(status.NOT_FOUND).json({
     success: false,
-    message: 'API Not Found!',
-    error: '',
+    message: 'Not Found!',
   });
 });
-
-// global error handle
-app.use(globalErrorHandler);
 
 export default app;

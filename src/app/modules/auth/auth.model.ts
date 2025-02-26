@@ -1,9 +1,9 @@
 import { model, Schema } from 'mongoose';
-import { TSignUp, UserModel } from './auth.interface';
+import { TUser, UserModel } from './auth.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
-const UserSchema = new Schema<TSignUp, UserModel>(
+const UserSchema = new Schema<TUser, UserModel>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -45,4 +45,4 @@ UserSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
 
-export const User = model<TSignUp, UserModel>('User', UserSchema);
+export const User = model<TUser, UserModel>('User', UserSchema);

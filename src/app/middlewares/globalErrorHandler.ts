@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { ErrorRequestHandler } from 'express';
 import { TErrorSources } from '../interface/error';
 import { ZodError } from 'zod';
 import handleZodError from '../errors/handleZodError';
@@ -8,12 +8,7 @@ import handleCastError from '../errors/handleCastError';
 import handleDuplicateError from '../errors/handleDuplicateError';
 import AppError from '../errors/AppError';
 
-const globalErrorHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500;
   let message = 'something went wrong!';
 
@@ -50,7 +45,7 @@ const globalErrorHandler = (
     errorSource = [
       {
         path: '',
-        message: err.message,
+        message: err?.message,
       },
     ];
   } else if (err instanceof Error) {
@@ -58,17 +53,18 @@ const globalErrorHandler = (
     errorSource = [
       {
         path: '',
-        message: err.message,
+        message: err?.message,
       },
     ];
   }
 
-  return res.status(statusCode).json({
+  res.status(statusCode).json({
     success: false,
     message,
     errorSource,
     stack: config.node_env === 'development' ? err?.stack : null,
   });
+  return;
 };
 
 export default globalErrorHandler;
