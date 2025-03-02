@@ -4,10 +4,17 @@ import { TSignIn, TUser } from './auth.interface';
 import { User } from './auth.model';
 import config from '../../config';
 import { generateToken } from './auth.utils';
+import { JwtPayload } from 'jsonwebtoken';
 
 // create user service
 const createUserIntoDB = async (payload: TUser) => {
   const result = await User.create(payload);
+  return result;
+};
+
+// create user service
+const loginUserWithTokenIntoDB = async (payload: JwtPayload) => {
+  const result = await User.findOne({ email: payload?.email });
   return result;
 };
 
@@ -54,4 +61,5 @@ const loginUserIntoDB = async (payload: TSignIn) => {
 export const UserServices = {
   createUserIntoDB,
   loginUserIntoDB,
+  loginUserWithTokenIntoDB,
 };

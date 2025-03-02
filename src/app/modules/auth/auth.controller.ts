@@ -25,8 +25,20 @@ const loginUser = catchAsync(async (req, res) => {
     token: result.token,
   });
 });
+// login user with token controller
+const loginUserWithToken = catchAsync(async (req, res) => {
+  const user = req.user;
+  const result = await UserServices.loginUserWithTokenIntoDB(user);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'User logged in successfully.',
+    data: result,
+  });
+});
 
 export const UserControllers = {
   createUser,
   loginUser,
+  loginUserWithToken,
 };
