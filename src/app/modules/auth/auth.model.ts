@@ -10,9 +10,10 @@ const UserSchema = new Schema<TUser, UserModel>(
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     password: { type: String, required: true, select: 0 },
     phone: { type: String, required: true },
-    address: { type: String, required: true },
+    address: { type: String, default: '' },
     photo: { type: String, default: '' },
     isDeleted: { type: Boolean, default: false },
+    social: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

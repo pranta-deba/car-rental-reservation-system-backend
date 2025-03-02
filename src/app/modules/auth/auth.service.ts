@@ -17,6 +17,36 @@ const loginUserWithTokenIntoDB = async (payload: JwtPayload) => {
   const result = await User.findOne({ email: payload?.email });
   return result;
 };
+// create google user service
+const googleUserIntoDB = async (payload: Partial<TUser>) => {
+  let user = await User.findOne({ email: payload?.email, social: true });
+
+  if (!user) {
+    user = await User.create({
+      name: payload?.name,
+      email: payload?.email,
+      phone: payload?.phone || 'unknown phone',
+      photo: payload?.photo || 'unknown photo',
+      password: payload?.email,
+      address: payload?.address || 'unknown address',
+      role: 'user',
+      social: true,
+    });
+  }
+  //create token and sent to the  client
+  const jwtPayload = {
+    email: user.email,
+    role: user.role,
+  };
+
+  const accessToken = generateToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+
+  return { token: accessToken, user };
+};
 
 // login user service
 const loginUserIntoDB = async (payload: TSignIn) => {
@@ -30,6 +60,11 @@ const loginUserIntoDB = async (payload: TSignIn) => {
   const isDeleted = user?.isDeleted;
   if (isDeleted) {
     throw new AppError(status.FORBIDDEN, 'This user is deleted !');
+  }
+
+  // only email password user not google user
+  if (user.social) {
+    throw new AppError(status.UNAUTHORIZED, 'This user is a social user!');
   }
 
   // checking if the password is correct
@@ -62,4 +97,5 @@ export const UserServices = {
   createUserIntoDB,
   loginUserIntoDB,
   loginUserWithTokenIntoDB,
+  googleUserIntoDB,
 };

@@ -13,6 +13,14 @@ router.post(
   validateRequest(userValidation.userSignUpValidationSchema),
   UserControllers.createUser,
 );
+
+// create google user route
+router.post(
+  '/google-signup',
+  validateRequest(userValidation.userGoogleSignInValidationSchema),
+  UserControllers.googleUser,
+);
+
 // login user route
 router.post(
   '/signin',

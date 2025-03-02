@@ -7,9 +7,10 @@ export type TUser = {
   role: 'user' | 'admin';
   password: string;
   phone: string;
-  address: string;
-  photo: string;
+  address?: string;
+  photo?: string;
   isDeleted: boolean;
+  social?: boolean;
 };
 
 export type TSignIn = {

@@ -36,9 +36,21 @@ const loginUserWithToken = catchAsync(async (req, res) => {
     data: result,
   });
 });
+// google user controller
+const googleUser = catchAsync(async (req, res) => {
+  const result = await UserServices.googleUserIntoDB(req.body);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Google logged in successfully.',
+    data: result.user,
+    token: result.token,
+  });
+});
 
 export const UserControllers = {
   createUser,
   loginUser,
   loginUserWithToken,
+  googleUser,
 };
