@@ -6,11 +6,13 @@ import { UserServices } from './auth.service';
 // create user controller
 const createUser = catchAsync(async (req, res) => {
   const result = await UserServices.createUserIntoDB(req.body);
+
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
     message: 'User registered successfully.',
-    data: result,
+    data: result?.user,
+    token: result?.token,
   });
 });
 

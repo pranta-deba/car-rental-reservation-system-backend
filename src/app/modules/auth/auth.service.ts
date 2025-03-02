@@ -8,8 +8,20 @@ import { JwtPayload } from 'jsonwebtoken';
 
 // create user service
 const createUserIntoDB = async (payload: TUser) => {
-  const result = await User.create(payload);
-  return result;
+  const user = await User.create(payload);
+  if (user) {
+    const jwtPayload = {
+      email: user.email,
+      role: user.role,
+    };
+
+    const accessToken = generateToken(
+      jwtPayload,
+      config.jwt_access_secret as string,
+      config.jwt_access_expires_in as string,
+    );
+    return { token: accessToken, user };
+  }
 };
 
 // create user service
