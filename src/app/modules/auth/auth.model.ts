@@ -11,6 +11,7 @@ const UserSchema = new Schema<TUser, UserModel>(
     password: { type: String, required: true, select: 0 },
     phone: { type: String, required: true },
     address: { type: String, required: true },
+    photo: { type: String, default: '' },
     isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true },

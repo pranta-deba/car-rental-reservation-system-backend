@@ -8,6 +8,7 @@ const userSignUpValidationSchema = z.object({
     role: z.enum(['user', 'admin']).optional(),
     phone: z.string().regex(/^\d{10,15}$/, 'Phone number must be 10-15 digits'),
     address: z.string().min(5, 'Address must be at least 5 characters'),
+    photo: z.string().optional(),
     isDeleted: z.boolean().optional(),
   }),
 });

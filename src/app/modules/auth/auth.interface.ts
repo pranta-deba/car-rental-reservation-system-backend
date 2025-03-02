@@ -8,6 +8,7 @@ export type TUser = {
   password: string;
   phone: string;
   address: string;
+  photo: string;
   isDeleted: boolean;
 };
 
