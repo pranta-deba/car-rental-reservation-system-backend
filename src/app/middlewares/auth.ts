@@ -10,7 +10,6 @@ import { User } from '../modules/auth/auth.model';
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const bearerToken = req.headers.authorization;
-    console.log(bearerToken);
     // checking if the token is missing
     if (!bearerToken) {
       throw new AppError(
@@ -25,7 +24,6 @@ const auth = (...requiredRoles: TUserRole[]) => {
       config.jwt_access_secret as string,
     ) as JwtPayload;
     const { email, role } = decoded;
-    console.log(decoded);
     // checking if the user is exist
     const user = await User.isUserExistsByEmail(email);
     if (!user) {

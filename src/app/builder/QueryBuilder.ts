@@ -74,3 +74,5 @@ class QueryBuilder<T> {
 }
 
 export default QueryBuilder;
+
+// GET /cars?searchTerm=BMW&sort=price,-createdAt&page=2&limit=5&fields=name,price
