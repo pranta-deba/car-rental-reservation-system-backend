@@ -10,6 +10,7 @@ import { User } from '../modules/auth/auth.model';
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const bearerToken = req.headers.authorization;
+
     // checking if the token is missing
     if (!bearerToken) {
       throw new AppError(

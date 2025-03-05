@@ -15,7 +15,7 @@ const createBooking = catchAsync(async (req, res) => {
   });
 });
 
-// user all booking controller
+// user all booking controller by user
 const userAllBooking = catchAsync(async (req, res) => {
   const { user } = req;
   const result = await BookingService.userAllBookingIntoDB(user);
@@ -23,6 +23,16 @@ const userAllBooking = catchAsync(async (req, res) => {
     statusCode: status.OK,
     success: true,
     message: 'My Bookings retrieved successfully.',
+    data: result,
+  });
+});
+// user all booking by admin
+const getAllBooking = catchAsync(async (req, res) => {
+  const result = await BookingService.getAllBookingIntoDB();
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Booked cars retrieved successfully.',
     data: result,
   });
 });
@@ -43,4 +53,5 @@ export const BookingController = {
   createBooking,
   userAllBooking,
   returnTheCar,
+  getAllBooking,
 };

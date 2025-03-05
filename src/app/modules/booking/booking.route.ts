@@ -16,6 +16,9 @@ router.post(
 // user all booking route
 router.get('/', auth(USER_ROLE.user), BookingController.userAllBooking);
 
+// user all booking route
+router.get('/booked', auth(USER_ROLE.admin), BookingController.getAllBooking);
+
 // return the car route
 router.put(
   '/',

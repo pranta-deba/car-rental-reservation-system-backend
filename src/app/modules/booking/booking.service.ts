@@ -81,6 +81,12 @@ const userAllBookingIntoDB = async (user: JwtPayload) => {
   return bookings;
 };
 
+// all booking service by admin
+const getAllBookingIntoDB = async () => {
+  const bookings = await Booking.find().populate('car').populate('user');
+  return bookings;
+};
+
 // Return The Car service
 const returnTheCarIntoDB = async (bookingId: string, endTime: string) => {
   const session = await mongoose.startSession();
@@ -150,4 +156,5 @@ export const BookingService = {
   createBookingIntoDB,
   userAllBookingIntoDB,
   returnTheCarIntoDB,
+  getAllBookingIntoDB,
 };
