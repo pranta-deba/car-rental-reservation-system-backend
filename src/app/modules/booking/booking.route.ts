@@ -16,8 +16,15 @@ router.post(
 // user all booking route
 router.get('/', auth(USER_ROLE.user), BookingController.userAllBooking);
 
-// user all booking route
+//  all booked by admin route
 router.get('/booked', auth(USER_ROLE.admin), BookingController.getAllBooking);
+
+//  cancel booking by user
+router.delete(
+  '/cancel/:bookingId',
+  auth(USER_ROLE.user),
+  BookingController.cancelBooking,
+);
 
 // return the car route
 router.put(

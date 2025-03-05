@@ -6,6 +6,7 @@ import status from 'http-status';
 import { Booking } from './booking.model';
 import { User } from '../auth/auth.model';
 import mongoose from 'mongoose';
+import { TUser } from '../auth/auth.interface';
 
 // create booking service
 const createBookingIntoDB = async (payload: TBooking, user: JwtPayload) => {
@@ -81,10 +82,56 @@ const userAllBookingIntoDB = async (user: JwtPayload) => {
   return bookings;
 };
 
-// all booking service by admin
+// all booking service by user
 const getAllBookingIntoDB = async () => {
   const bookings = await Booking.find().populate('car').populate('user');
   return bookings;
+};
+
+// cancel booking service by user
+const cancelBookingIntoDB = async (bookingId: string, user: JwtPayload) => {
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    // step 1: Find the booking
+    const booking = await Booking.findById(bookingId)
+      .populate<{ user: TUser }>('user')
+      .populate('car')
+      .session(session);
+
+    if (!booking) {
+      throw new AppError(status.NOT_FOUND, 'Booking not found!');
+    }
+    if (booking?.user?.email !== user?.email) {
+      throw new AppError(
+        status.FORBIDDEN,
+        'You are not authorized to cancel this booking!',
+      );
+    }
+
+    // step 2: Find the car and update status
+    const car = await Car.findById(booking.car._id).session(session);
+    if (!car) {
+      throw new AppError(status.NOT_FOUND, 'Car not found!');
+    }
+    car.status = 'available';
+    await car.save({ session });
+
+    // step 3: Delete the booking
+    await Booking.findByIdAndDelete(bookingId, { session });
+
+    // Commit transaction
+    await session.commitTransaction();
+    await session.endSession();
+
+    return { deleted: true };
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new AppError(status.BAD_REQUEST, 'Failed to cancel booking!');
+  }
 };
 
 // Return The Car service
@@ -107,6 +154,7 @@ const returnTheCarIntoDB = async (bookingId: string, endTime: string) => {
     }
     // step 2
     const car = await Car.findById(booking.car._id).session(session);
+
     if (!car) {
       throw new AppError(status.NOT_FOUND, 'Car not found!');
     }
@@ -157,4 +205,5 @@ export const BookingService = {
   userAllBookingIntoDB,
   returnTheCarIntoDB,
   getAllBookingIntoDB,
+  cancelBookingIntoDB,
 };
