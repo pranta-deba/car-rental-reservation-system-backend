@@ -177,7 +177,7 @@ const returnTheCarIntoDB = async (bookingId: string, endTime: string) => {
       );
     }
     // step 5
-    const totalCost = durationInHours * car.pricePerHour;
+    const totalCost = Math.round(durationInHours * car.pricePerHour);
     // step 6
     booking.endTime = endTime;
     booking.totalCost = totalCost;
