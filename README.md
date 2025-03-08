@@ -10,7 +10,7 @@ Check out the live API **[here](https://car-rental-system-backend-nine.vercel.ap
 
 ## 📂 Frontend Repository
 
-The frontend repository for this project is available **[here](https://car-rental-system-2425e.web.app)
+The frontend repository for this project is available **[here](https://github.com/pranta-deba/car-rental-reservation-system-frontend)
 ---
 
 ## ✨ Features
