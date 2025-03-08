@@ -12,7 +12,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:5173'],
+    origin: [
+      'http://localhost:5173',
+      'https://car-rental-system-2425e.web.app',
+      'https://car-rental-system-2425e.firebaseapp.com',
+    ],
     credentials: true,
   }),
 );
